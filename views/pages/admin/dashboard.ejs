@@ -1,0 +1,34 @@
+<%- include('../../partials/header', { title: 'Admin Dashboard' , user: user }) %>
+
+  <div class="page-wrapper">
+    <div class="container-fluid">
+      <h2>👑 Welcome, <%= user.name %>
+      </h2>
+      <hr>
+
+      <div class="row text-center mt-5">
+        <div class="col-md-6">
+          <div class="card p-4 shadow">
+            <a href="/admin/managers">
+              <h3>👔 Total Managers</h3>
+              <h1>
+                <%= managerCount %>
+              </h1>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-4 shadow">
+            <a href="/admin/employees" style="text-decoration: none;">
+                <h3>👷 Total Employees</h3>
+                <h1>
+                  <%= employeeCount %>
+                </h1>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../../partials/footer') %>

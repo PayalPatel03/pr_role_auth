@@ -1,0 +1,41 @@
+<%- include('../../partials/header', { title: 'Assigned Tasks', user: user }) %>
+
+<div class="page-wrapper">
+  <div class="container-fluid">
+    <h3>🗂 Assigned Tasks</h3>
+
+    <table class="table table-striped mt-3 table-bordered table-responsive table-light">
+      <thead>
+        <tr>
+          <th>Task Title</th>
+          <th>Description</th>
+          <th>Assigned To</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% tasks.forEach(task => { %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= task.description %></td>
+          <td>
+            <% if (task.assignedTo) { %>
+              <%= task.assignedTo.name %> (<%= task.assignedTo.email %>)
+            <% } else { %>
+              <em>Unassigned</em>
+            <% } %>
+          </td>
+          <td>
+            <span class="badge 
+              <%= task.status === 'completed' ? 'bg-success' : 'bg-warning text-dark' %>">
+              <%= task.status %>
+            </span>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../../partials/footer') %>

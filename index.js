@@ -1,27 +1,42 @@
-const express = require('express');
-const dotenv = require('./configs/config.env');
-const morgan = require('morgan');
-const db = require('./configs/db');
-const userRouter = require('./routers/user.route');
 const bodyParser = require('body-parser');
+const express = require('express');
+const morgan = require('morgan');
+const dotenv = require('./configs/config.env');
+const db = require('./configs/db');
 const cookieParser = require('cookie-parser');
-
-const port = dotenv.PORT || 8081;
-
+const flash = require('connect-flash');
+const addFlash = require('./middlewares/flash');
+const path = require('path');
+const session = require('express-session');
 const app = express();
 
-app.use(morgan('tiny'));
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(cookieParser());
-app.set('view engine','ejs');
-app.use(express.static('public'));
+const port = dotenv.PORT || 3000;
 
-app.use('/',require('./routers'));
-app.use('/api/user',userRouter);
-app.listen(port,(err)=>{
+app.set('view engine', 'ejs')
+
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use(cookieParser());
+
+app.use(morgan('dev'));
+
+app.use(session({
+    secret: dotenv.SECRET_KEY, 
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24} 
+}));
+
+app.use(flash());
+app.use(addFlash);
+
+app.use('/', require('./routers'));
+
+app.listen(port, (err) => {
     if(!err){
         db();
-        console.log("Server start on port: "+port);        
-        console.log("http://localhost:"+port);        
+        console.log("http://localhost:"+port);   
     }
 })

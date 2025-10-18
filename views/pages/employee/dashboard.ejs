@@ -1,0 +1,41 @@
+<%- include('../../partials/header', { user: user }) %>
+
+<div class="page-wrapper p-4">
+  <h3>My Tasks</h3>
+
+  <% if (tasks.length === 0) { %>
+    <p>No tasks assigned yet.</p>
+  <% } else { %>
+    <% tasks.forEach(task => { %>
+      <div class="card p-3 mb-3 shadow-sm">
+        <h5><%= task.title %></h5>
+        <p><%= task.description %></p>
+        <p><strong>Priority:</strong> <%= task.priority %></p>
+        <p><strong>Deadline:</strong> <%= task.deadline ? task.deadline.toDateString() : 'N/A' %></p>
+        <p><strong>Status:</strong> <%= task.status %></p>
+
+        <form action="/employee/update-task/<%= task._id %>" method="POST" class="d-flex gap-2 mb-2">
+          <select name="status" class="form-select w-auto">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <button class="btn btn-primary btn-sm">Update</button>
+        </form>
+
+        <form action="/employee/comment/<%= task._id %>" method="POST" class="d-flex gap-2">
+          <input type="text" name="comment" class="form-control" placeholder="Add comment..." required>
+          <button class="btn btn-success btn-sm">Add</button>
+        </form>
+
+        <ul class="mt-2">
+          <% task.comments.forEach(c => { %>
+            <li><strong><%= c.user?.name || 'User' %>:</strong> <%= c.text %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+
+<%- include('../../partials/footer') %>

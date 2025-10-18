@@ -1,0 +1,62 @@
+<%- include('../../partials/header', { user: user }) %>
+
+<div class="page-wrapper">
+  <div class="container-fluid">
+    <h3>📋 My Tasks</h3>
+
+    <table class="table table-striped mt-3 table-bordered table-responsive table-active table-light">
+      <thead>
+        <tr>
+          <th>Task Title</th>
+          <th>Description</th>
+          <th>Assigned By</th>
+          <th>Status</th>
+          <th>Update</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (tasks.length === 0) { %>
+          <tr><td colspan="6" class="text-center">No tasks assigned yet.</td></tr>
+        <% } else { %>
+          <% tasks.forEach(task => { %>
+          <tr>
+            <td><%= task.title %></td>
+            <td><%= task.description %></td>
+            <td><%= task.assignedBy ? task.assignedBy.name : 'N/A' %></td>
+            <td><%= task.status %></td>
+
+            <!-- Status Update -->
+            <td>
+              <form action="/employee/update-task/<%= task._id %>" method="POST">
+                <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                  <option value="Pending" <%= task.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                  <option value="In Progress" <%= task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                  <option value="Completed" <%= task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                </select>
+              </form>
+            </td>
+
+            <!-- Comments -->
+            <td>
+              <!-- Show existing comments -->
+              <div style="max-height:150px; overflow-y:auto;">
+                <% if(task.comments && task.comments.length > 0){ %>
+                  <% task.comments.forEach(c => { %>
+                    <p><strong><%= c.user ? c.user.name : 'N/A' %>:</strong> <%= c.text %></p>
+                  <% }) %>
+                <% } else { %>
+                  <p class="text-muted">No comments yet</p>
+                <% } %>
+              </div>
+            </td>
+
+          </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../../partials/footer') %>

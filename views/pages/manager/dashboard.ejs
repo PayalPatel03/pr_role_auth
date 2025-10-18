@@ -1,0 +1,44 @@
+<%- include('../../partials/header', { title: 'Manager Dashboard', user: user }) %>
+
+<div class="page-wrapper">
+  <div class="container-fluid">
+    <h2>👔 Welcome, <%= user.name %></h2>
+    <hr>
+
+    <div class="row text-center mt-4">
+      <!-- Total Employees -->
+      <div class="col-md-3 mb-3">
+        <div class="card p-4 shadow-sm">
+          <h5>👥 Total Employees</h5>
+          <h2><%= employeeCount %></h2>
+        </div>
+      </div>
+
+      <!-- Total Tasks -->
+      <div class="col-md-3 mb-3">
+        <div class="card p-4 shadow-sm">
+          <h5>🗂 Total Tasks Assigned</h5>
+          <h2><%= totalTasks %></h2>
+        </div>
+      </div>
+
+      <!-- Pending Tasks -->
+      <div class="col-md-3 mb-3">
+        <div class="card p-4 shadow-sm">
+          <h5>⏳ Pending Tasks</h5>
+          <h2><%= pendingTasks %></h2>
+        </div>
+      </div>
+
+      <!-- Completed Tasks -->
+      <div class="col-md-3 mb-3">
+        <div class="card p-4 shadow-sm">
+          <h5>✅ Completed Tasks</h5>
+          <h2><%= completedTasks %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/footer') %>

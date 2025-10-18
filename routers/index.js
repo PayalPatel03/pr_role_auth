@@ -1,13 +1,20 @@
-
 const { Router } = require("express");
-const adminCtl = require('../controllers');
 const router = Router();
+const adminCtl = require('../controllers/admin.controller');
+const userCtl = require('../controllers/user.controller');
 
-router.get('/',adminCtl.homePage);
-router.get('/form-basic',adminCtl.formBasicPage)
-router.get('/authentication-login',adminCtl.authenticationLoginPage)
-router.get('/authentication-register',adminCtl.authenticationRegisterPage)
-router.get('/tables',adminCtl.tablesPage)
+const userRouter = require('./user.routes');
+const adminRouter = require('./admin.routes');
+const managerRouter = require('./manager.routes');
+const employeeRouter = require('./employee.routes');
 
+router.get('/', (req,res)=>{
+    return res.render('./pages/login')
+});
+router.use('/', userRouter);        
+router.use('/admin', adminRouter);          
+router.use('/manager', managerRouter);  
+router.use('/employee', employeeRouter);
 
+router.get('/logout',userCtl.logoutUser)
 module.exports = router;
